@@ -5,7 +5,7 @@ import { z } from "zod";
 import * as placeService from "@/server/place-service";
 import type { PlaceExportPayload } from "@/types";
 
-const PATH = "/hom-nay-choi-dau";
+// Removed specific PATH constant since we revalidate layout now
 
 const placeInputSchema = z.object({
   name: z.string().trim().min(1, "Cần có tên địa điểm").max(120),
@@ -34,7 +34,7 @@ export async function createPlaceAction(input: PlaceInput) {
     priceRange: data.priceRange ?? null,
     categoryId: data.categoryId || null,
   });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function updatePlaceAction(id: string, input: PlaceInput) {
@@ -50,32 +50,32 @@ export async function updatePlaceAction(id: string, input: PlaceInput) {
     priceRange: data.priceRange ?? null,
     categoryId: data.categoryId || null,
   });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function deletePlaceAction(id: string) {
   await placeService.deletePlace(id);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function togglePlaceFavoriteAction(id: string, next: boolean) {
   await placeService.setPlaceFavorite(id, next);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function togglePlaceBlacklistAction(id: string, next: boolean) {
   await placeService.setPlaceBlacklisted(id, next);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function hidePlaceForTodayAction(id: string) {
   await placeService.hidePlaceForToday(id);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function unhidePlaceAction(id: string) {
   await placeService.unhidePlace(id);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function getPlaceWheelCandidatesAction() {
@@ -84,7 +84,7 @@ export async function getPlaceWheelCandidatesAction() {
 
 export async function getOrCreatePlaceCategoryAction(name: string) {
   const created = await placeService.getOrCreatePlaceCategory(name);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
   return created;
 }
 
@@ -144,6 +144,6 @@ export async function importPlacesAction(raw: unknown) {
       categoryName: p.categoryName ?? null,
     })),
   });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
   return result;
 }

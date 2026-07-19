@@ -5,7 +5,7 @@ import { z } from "zod";
 import * as drinkService from "@/server/drink-service";
 import type { CafeExportPayload } from "@/types";
 
-const PATH = "/hom-nay-uong-gi";
+// Removed specific PATH constant since we revalidate layout now
 
 const cafeInputSchema = z.object({
   name: z.string().trim().min(1, "Cần có tên quán").max(120),
@@ -45,7 +45,7 @@ export async function createCafeAction(input: CafeInput) {
     categoryId: data.categoryId || null,
     drinks: data.drinks,
   });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
   return created;
 }
 
@@ -64,42 +64,42 @@ export async function updateCafeAction(id: string, input: CafeInput) {
     categoryId: data.categoryId || null,
     drinks: data.drinks,
   });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function deleteCafeAction(id: string) {
   await drinkService.deleteCafe(id);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function toggleCafeFavoriteAction(id: string, next: boolean) {
   await drinkService.setCafeFavorite(id, next);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function toggleCafeBlacklistAction(id: string, next: boolean) {
   await drinkService.setCafeBlacklisted(id, next);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function hideCafeForTodayAction(id: string) {
   await drinkService.hideCafeForToday(id);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function unhideCafeAction(id: string) {
   await drinkService.unhideCafe(id);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function toggleDrinkFavoriteAction(drinkId: string, next: boolean) {
   await drinkService.setDrinkFavorite(drinkId, next);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function getOrCreateCafeCategoryAction(name: string) {
   const created = await drinkService.getOrCreateCafeCategory(name);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
   return created;
 }
 
@@ -109,6 +109,6 @@ export async function exportCafesAction(): Promise<CafeExportPayload> {
 
 export async function importCafesAction(payload: CafeExportPayload) {
   const result = await drinkService.importCafes(payload);
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
   return result;
 }

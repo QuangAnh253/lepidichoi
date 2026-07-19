@@ -7,7 +7,7 @@ import { slugify } from "@/lib/utils";
 import { listWheelCandidates, exportFoods as exportFoodsData } from "@/server/foods";
 import type { FoodExportPayload } from "@/types";
 
-const PATH = "/hom-nay-an-gi";
+// Removed specific PATH constant since we revalidate layout now
 
 const priceRangeEnum = z.enum(["BUDGET", "MID", "PREMIUM", "LUXURY"]).nullable().optional();
 
@@ -42,7 +42,7 @@ export async function createFoodAction(input: FoodInput) {
       },
     },
   });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function updateFoodAction(id: string, input: FoodInput) {
@@ -66,34 +66,34 @@ export async function updateFoodAction(id: string, input: FoodInput) {
       },
     },
   });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function deleteFoodAction(id: string) {
   await prisma.food.delete({ where: { id } });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function toggleFavoriteAction(id: string, next: boolean) {
   await prisma.food.update({ where: { id }, data: { isFavorite: next } });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function toggleBlacklistAction(id: string, next: boolean) {
   await prisma.food.update({ where: { id }, data: { isBlacklisted: next } });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function hideForTodayAction(id: string) {
   const endOfDay = new Date();
   endOfDay.setHours(23, 59, 59, 999);
   await prisma.food.update({ where: { id }, data: { hiddenUntil: endOfDay } });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function unhideAction(id: string) {
   await prisma.food.update({ where: { id }, data: { hiddenUntil: null } });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function getWheelCandidatesAction() {
@@ -107,7 +107,7 @@ export async function getOrCreateCategoryAction(name: string) {
   const existing = await prisma.category.findUnique({ where: { slug_type: { slug, type: "FOOD" } } });
   if (existing) return existing;
   const created = await prisma.category.create({ data: { name: trimmed, slug, type: "FOOD" } });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
   return created;
 }
 
@@ -209,6 +209,6 @@ export async function importFoodsAction(raw: unknown) {
     imported += 1;
   }
 
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
   return { imported };
 }

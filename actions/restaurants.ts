@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 
-const PATH = "/hom-nay-an-gi";
+// Removed specific PATH constant since we revalidate layout now
 
 const restaurantInputSchema = z.object({
   name: z.string().trim().min(1, "Cần có tên quán").max(120),
@@ -35,7 +35,7 @@ export async function createRestaurantAction(input: RestaurantInput) {
       categoryId: data.categoryId || null,
     },
   });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
   return created;
 }
 
@@ -55,10 +55,10 @@ export async function updateRestaurantAction(id: string, input: RestaurantInput)
       categoryId: data.categoryId || null,
     },
   });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
 
 export async function deleteRestaurantAction(id: string) {
   await prisma.restaurant.delete({ where: { id } });
-  revalidatePath(PATH);
+  revalidatePath("/", "layout");
 }
