@@ -21,8 +21,8 @@ export default function LoginPage() {
     startTransition(async () => {
       const result = await loginAction(formData);
       if (result.success) {
-        // Redirect to homepage after successful login
-        router.push("/");
+        // Redirect to homepage using hard navigation to clear Next.js client router cache
+        window.location.href = "/";
       } else {
         setError(result.error || "Có lỗi xảy ra");
       }
