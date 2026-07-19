@@ -22,7 +22,12 @@ export const settingsRepository = {
   },
 
   async createDefaultSettings(): Promise<SettingsRow> {
-    return prisma.settings.create({ data: { id: 1 }, include: withLocations });
+    return prisma.settings.upsert({
+      where: { id: 1 },
+      update: {},
+      create: { id: 1 },
+      include: withLocations,
+    });
   },
 
   async updateSettingsFields(
