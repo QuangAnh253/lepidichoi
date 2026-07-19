@@ -43,42 +43,51 @@ const cafeInputSchema = z.object({
 export type CafeInput = z.infer<typeof cafeInputSchema>;
 
 export async function createCafeAction(input: CafeInput) {
-  const data = cafeInputSchema.parse(input);
-  const created = await drinkService.createCafe({
-    name: data.name,
-    address: data.address || null,
-    latitude: data.latitude ?? null,
-    longitude: data.longitude ?? null,
-    imageUrl: data.imageUrl || null,
-    uploadedImageUrl: data.uploadedImageUrl || null,
-    menuUrl: data.menuUrl || null,
-    url: data.url || null,
-    googleMapUrl: data.googleMapUrl || null,
-    priceRange: data.priceRange ?? null,
-    categoryId: data.categoryId || null,
-    drinks: data.drinks,
-  });
-  revalidatePath("/", "layout");
-  return created;
+  try {
+    const data = cafeInputSchema.parse(input);
+    const created = await drinkService.createCafe({
+      name: data.name,
+      address: data.address || null,
+      latitude: data.latitude ?? null,
+      longitude: data.longitude ?? null,
+      imageUrl: data.imageUrl || null,
+      uploadedImageUrl: data.uploadedImageUrl || null,
+      menuUrl: data.menuUrl || null,
+      url: data.url || null,
+      googleMapUrl: data.googleMapUrl || null,
+      priceRange: data.priceRange ?? null,
+      categoryId: data.categoryId || null,
+      drinks: data.drinks,
+    });
+    revalidatePath("/", "layout");
+    return { success: true as const, data: created };
+  } catch (error: any) {
+    return { success: false as const, error: error.message || String(error) };
+  }
 }
 
 export async function updateCafeAction(id: string, input: CafeInput) {
-  const data = cafeInputSchema.parse(input);
-  await drinkService.updateCafe(id, {
-    name: data.name,
-    address: data.address || null,
-    latitude: data.latitude ?? null,
-    longitude: data.longitude ?? null,
-    imageUrl: data.imageUrl || null,
-    uploadedImageUrl: data.uploadedImageUrl || null,
-    menuUrl: data.menuUrl || null,
-    url: data.url || null,
-    googleMapUrl: data.googleMapUrl || null,
-    priceRange: data.priceRange ?? null,
-    categoryId: data.categoryId || null,
-    drinks: data.drinks,
-  });
-  revalidatePath("/", "layout");
+  try {
+    const data = cafeInputSchema.parse(input);
+    await drinkService.updateCafe(id, {
+      name: data.name,
+      address: data.address || null,
+      latitude: data.latitude ?? null,
+      longitude: data.longitude ?? null,
+      imageUrl: data.imageUrl || null,
+      uploadedImageUrl: data.uploadedImageUrl || null,
+      menuUrl: data.menuUrl || null,
+      url: data.url || null,
+      googleMapUrl: data.googleMapUrl || null,
+      priceRange: data.priceRange ?? null,
+      categoryId: data.categoryId || null,
+      drinks: data.drinks,
+    });
+    revalidatePath("/", "layout");
+    return { success: true as const };
+  } catch (error: any) {
+    return { success: false as const, error: error.message || String(error) };
+  }
 }
 
 export async function deleteCafeAction(id: string) {
@@ -112,9 +121,13 @@ export async function toggleDrinkFavoriteAction(drinkId: string, next: boolean) 
 }
 
 export async function getOrCreateCafeCategoryAction(name: string) {
-  const created = await drinkService.getOrCreateCafeCategory(name);
-  revalidatePath("/", "layout");
-  return created;
+  try {
+    const created = await drinkService.getOrCreateCafeCategory(name);
+    revalidatePath("/", "layout");
+    return { success: true as const, data: created };
+  } catch (error: any) {
+    return { success: false as const, error: error.message || String(error) };
+  }
 }
 
 export async function exportCafesAction(): Promise<CafeExportPayload> {

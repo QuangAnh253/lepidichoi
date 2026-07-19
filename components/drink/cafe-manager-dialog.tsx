@@ -107,8 +107,12 @@ export function CafeManagerDialog({ open, onOpenChange, cafe, categories, existi
           toast.error("Nhập tên danh mục mới nhé.");
           return;
         }
-        const created = await getOrCreateCafeCategoryAction(newCategoryName);
-        finalCategoryId = created?.id ?? "";
+        const categoryRes = await getOrCreateCafeCategoryAction(newCategoryName);
+        if (!categoryRes.success) {
+          toast.error("Lỗi tạo danh mục: " + categoryRes.error);
+          return;
+        }
+        finalCategoryId = categoryRes.data?.id ?? "";
       }
 
       const input = {
@@ -128,11 +132,20 @@ export function CafeManagerDialog({ open, onOpenChange, cafe, categories, existi
           .map((d) => ({ name: d.name.trim(), isFavorite: d.isFavorite })),
       };
 
+      let res;
       if (cafe) {
-        await updateCafeAction(cafe.id, input);
+        res = await updateCafeAction(cafe.id, input);
+        if (res && res.success === false) {
+          toast.error("Lỗi: " + res.error);
+          return;
+        }
         toast.success("Đã lưu thay đổi.");
       } else {
-        await createCafeAction(input);
+        res = await createCafeAction(input);
+        if (res && res.success === false) {
+          toast.error("Lỗi: " + res.error);
+          return;
+        }
         toast.success(`Đã thêm quán "${input.name}".`);
       }
       router.refresh();
