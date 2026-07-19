@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Design tokens — "Digital Garden" (Phase 2)
+   Warm cream paper by day, film-black charcoal by night. Terracotta /
+   golden / olive accents pulled from analog film photography, not from
+   product-dashboard blue.
+   ========================================================================== */
+
+@layer base {
+  :root {
+    --background: 40 38% 93%;
+    --foreground: 24 16% 15%;
+
+    --card: 42 45% 97%;
+    --card-foreground: 24 16% 15%;
+
+    --popover: 42 45% 97%;
+    --popover-foreground: 24 16% 15%;
+
+    --muted: 39 30% 87%;
+    --muted-foreground: 30 12% 40%;
+
+    --secondary: 39 32% 90%;
+    --secondary-foreground: 24 16% 18%;
+
+    --primary: 16 52% 48%;
+    --primary-foreground: 42 45% 97%;
+
+    --accent: 82 24% 36%;
+    --accent-foreground: 42 45% 97%;
+
+    --destructive: 6 60% 44%;
+    --destructive-foreground: 42 45% 97%;
+
+    --border: 37 28% 82%;
+    --input: 37 28% 82%;
+    --ring: 16 52% 48%;
+
+    --golden: 38 60% 56%;
+    --olive: 82 24% 36%;
+    --terracotta: 16 52% 48%;
+
+    --radius: 1.5rem;
+
+    --font-display: "Playfair Display", Georgia, serif;
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  .dark {
+    --background: 24 16% 9%;
+    --foreground: 40 30% 90%;
+
+    --card: 26 17% 13%;
+    --card-foreground: 40 30% 90%;
+
+    --popover: 26 17% 13%;
+    --popover-foreground: 40 30% 90%;
+
+    --muted: 28 16% 17%;
+    --muted-foreground: 33 14% 62%;
+
+    --secondary: 27 15% 15%;
+    --secondary-foreground: 40 30% 90%;
+
+    --primary: 38 66% 58%;
+    --primary-foreground: 24 16% 12%;
+
+    --accent: 80 20% 52%;
+    --accent-foreground: 24 16% 12%;
+
+    --destructive: 6 60% 54%;
+    --destructive-foreground: 40 30% 95%;
+
+    --border: 28 17% 19%;
+    --input: 28 17% 19%;
+    --ring: 38 66% 58%;
+
+    --golden: 38 66% 58%;
+    --olive: 80 20% 52%;
+    --terracotta: 12 55% 56%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    @apply bg-primary/25 text-foreground;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+/* ==========================================================================
+   Texture & feel
+   ========================================================================== */
+
+@layer utilities {
+  /* Very light film grain — applied broadly (not just navbar), per the
+     "film photography" brief. Pure CSS turbulence, no image asset. */
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0.045;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-repeat: repeat;
+  }
+
+  /* Frosted glass — reserved for the navbar only, per design brief. */
+  .glass-nav {
+    background: hsl(var(--background) / 0.65);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+  }
+
+  .fade-in-up {
+    @apply animate-fade-in-up;
+    animation-fill-mode: backwards;
+  }
+}

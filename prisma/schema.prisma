@@ -1,0 +1,222 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// Một địa điểm có toạ độ — dùng cho "Nhà Lê" / "Nhà Pi" trong Settings,
+/// và có thể mở rộng cho các mốc khác sau này (công ty, trường...).
+/// Tách riêng khỏi Settings để: (1) đổi nhà không cần sửa schema, (2) có
+/// thể lưu nhiều vị trí nếu cần trong tương lai.
+model Location {
+  id             String    @id @default(uuid())
+  name           String
+  latitude       Float
+  longitude      Float
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  settingsAsHome Settings? @relation("HomeLocation")
+  settingsAsLua  Settings? @relation("LuaLocation")
+
+  @@map("locations")
+}
+
+/// Bảng cấu hình duy nhất của site (không phải per-user). id luôn = 1,
+/// mọi thao tác ghi phải dùng upsert({ where: { id: 1 }, ... }).
+model Settings {
+  id              Int       @id @default(1)
+  theme           String    @default("system")
+  defaultRadiusKm Float     @default(5)
+  favoriteView    String    @default("grid")
+  musicEnabled    Boolean   @default(true)
+  updatedAt       DateTime  @updatedAt
+  homeLocationId  String?   @unique
+  luaLocationId   String?   @unique
+  homeLocation    Location? @relation("HomeLocation", fields: [homeLocationId], references: [id])
+  luaLocation     Location? @relation("LuaLocation", fields: [luaLocationId], references: [id])
+
+  @@map("settings")
+}
+
+model Category {
+  id        String       @id @default(uuid())
+  name      String
+  slug      String
+  icon      String?
+  color     String?
+  type      CategoryType @default(FOOD)
+  createdAt DateTime     @default(now())
+  foods     Food[]
+  places    Place[]
+  restaurants Restaurant[]
+  cafes     Cafe[]
+
+  @@unique([slug, type])
+  @@map("categories")
+}
+
+model Restaurant {
+  id           String           @id @default(uuid())
+  name         String
+  address      String?
+  latitude     Float?
+  longitude    Float?
+  imageUrl     String?
+  url          String?
+  googleMapUrl String?
+  priceRange   PriceRange?
+  categoryId   String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  foodLinks    FoodRestaurant[]
+  category     Category?        @relation(fields: [categoryId], references: [id])
+
+  @@index([categoryId])
+  @@map("restaurants")
+}
+
+/// Bảng nối nhiều-nhiều Food <-> Restaurant. Thay cho Food.restaurantId
+/// (1-1) của Phase 2 — một món (vd "Pizza") có thể gắn nhiều quán
+/// (Pizza Hut, Domino's, 4P's, Al Fresco...).
+model FoodRestaurant {
+  id           String     @id @default(uuid())
+  foodId       String
+  restaurantId String
+  createdAt    DateTime   @default(now())
+  food         Food       @relation(fields: [foodId], references: [id], onDelete: Cascade)
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@unique([foodId, restaurantId])
+  @@index([restaurantId])
+  @@map("food_restaurants")
+}
+
+model Food {
+  id              String           @id @default(uuid())
+  name            String
+  description     String?
+  imageUrl        String?
+  priceRange      PriceRange?
+  spicyLevel      Int?
+  tags            String[]         @default([])
+  categoryId      String?
+  isFavorite      Boolean          @default(false)
+  isBlacklisted   Boolean          @default(false)
+  hiddenUntil     DateTime?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  restaurantLinks FoodRestaurant[]
+  category        Category?        @relation(fields: [categoryId], references: [id])
+  histories       histories[]
+
+  @@index([categoryId])
+  @@map("foods")
+}
+
+/// Quán cà phê — vai trò tương tự Restaurant nhưng cho domain "uống gì".
+model Cafe {
+  id                 String      @id @default(uuid())
+  name               String
+  address            String?
+  latitude           Float?
+  longitude          Float?
+  imageUrl           String?
+  url                String?
+  menuUrl            String?
+  googleMapUrl       String?
+  priceRange         PriceRange?
+  categoryId         String?
+  isFavorite         Boolean     @default(false)
+  isBlacklisted      Boolean     @default(false)
+  hiddenUntil        DateTime?
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+  drinks             Drink[]
+  category           Category?   @relation(fields: [categoryId], references: [id])
+
+  @@index([categoryId])
+  @@map("cafes")
+}
+
+model Drink {
+  id              String            @id @default(uuid())
+  cafeId          String
+  name            String
+  isFavorite      Boolean           @default(false)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  cafe            Cafe              @relation(fields: [cafeId], references: [id], onDelete: Cascade)
+  drink_histories drink_histories[]
+
+  @@index([cafeId])
+  @@map("drinks")
+}
+
+/// "Hôm nay chơi đâu" — địa điểm (rạp phim, bảo tàng, công viên...).
+/// `category` đóng vai trò "Topic" trong brief Phase 3 (Cinema, Museum,
+/// Park, Bookstore, Boardgame, Exhibition, Walking, Shopping...), dùng
+/// chung model Category với type = PLACE.
+model Place {
+  id            String      @id @default(uuid())
+  name          String
+  address       String?
+  latitude      Float?
+  longitude     Float?
+  imageUrl      String?
+  url           String?
+  googleMapUrl  String?
+  priceRange    PriceRange?
+  categoryId    String?
+  isFavorite    Boolean     @default(false)
+  isBlacklisted Boolean     @default(false)
+  hiddenUntil   DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  category      Category?   @relation(fields: [categoryId], references: [id])
+
+  @@index([categoryId])
+  @@map("places")
+}
+
+model drink_histories {
+  id        String   @id
+  drinkId   String?
+  drinkName String
+  cafeName  String?
+  note      String?
+  createdAt DateTime @default(now())
+  drinks    Drink?   @relation(fields: [drinkId], references: [id])
+
+  @@index([drinkId])
+}
+
+model histories {
+  id             String   @id
+  foodId         String?
+  foodName       String
+  restaurantName String?
+  note           String?
+  createdAt      DateTime @default(now())
+  foods          Food?    @relation(fields: [foodId], references: [id])
+
+  @@index([foodId])
+}
+
+enum PriceRange {
+  BUDGET
+  MID
+  PREMIUM
+  LUXURY
+}
+
+/// Phân vùng Category theo domain nội dung, để một slug (vd "ca-phe") có
+/// thể tồn tại độc lập ở Food lẫn Place mà không đụng constraint unique.
+enum CategoryType {
+  FOOD
+  DRINK
+  PLACE
+}
