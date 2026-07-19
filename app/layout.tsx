@@ -54,8 +54,22 @@ export const metadata: Metadata = {
     description: "Vòng quay đồ ăn ngẫu nhiên, khám phá ẩm thực Hà Nội cùng Lê Pi đi chơi.",
     url: "https://lepidichoi.io.vn",
     siteName: "Lê Pi đi chơi",
+    images: [
+      {
+        url: "https://lepidichoi.io.vn/preview.png",
+        width: 1200,
+        height: 630,
+        alt: "Hôm Nay Ăn Gì? - Lê Pi đi chơi",
+      },
+    ],
     locale: "vi_VN",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hôm Nay Ăn Gì? - Lê Pi đi chơi",
+    description: "Vòng quay đồ ăn ngẫu nhiên, khám phá ẩm thực Hà Nội cùng Lê Pi đi chơi.",
+    images: ["https://lepidichoi.io.vn/preview.png"],
   },
   icons: {
     icon: [

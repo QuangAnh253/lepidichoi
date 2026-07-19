@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "Bản Đồ Ẩm Thực & Địa Điểm | Hôm Nay Ăn Gì?",
     description: "Bản đồ các quán ngon Hà Nội, cà phê bệt, chốn ăn chơi được đúc kết trên một bản đồ duy nhất bởi Lê Pi đi chơi.",
     url: "https://lepidichoi.io.vn/guest/ban-do",
+    images: ["https://lepidichoi.io.vn/preview.png"],
   }
 };
 

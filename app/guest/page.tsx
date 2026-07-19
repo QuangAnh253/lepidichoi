@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     title: "Vòng Quay Đồ Ăn | Hôm Nay Ăn Gì?",
     description: "Vòng quay đồ ăn ngẫu nhiên, random ẩm thực Hà Nội cùng Lê Pi đi chơi (lepidichoi).",
     url: "https://lepidichoi.io.vn/guest",
+    images: ["https://lepidichoi.io.vn/preview.png"],
   }
 };
 
