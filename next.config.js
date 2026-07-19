@@ -6,6 +6,11 @@ const nextConfig = {
       { protocol: "https", hostname: "**" },
     ],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '32mb',
+    },
+  },
 };
 
 module.exports = nextConfig;

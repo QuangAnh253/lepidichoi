@@ -10,8 +10,9 @@ export async function uploadImageAction(formData: FormData) {
     return { success: false, error: "File không phải là ảnh hợp lệ" };
   }
   
-  if (file.size > 32 * 1024 * 1024) {
-    return { success: false, error: "Ảnh quá lớn, tối đa 32MB" };
+  // Vercel Serverless Function limit is 4.5MB for request bodies
+  if (file.size > 4.5 * 1024 * 1024) {
+    return { success: false, error: "Ảnh quá lớn, tối đa 4.5MB (giới hạn của Vercel)" };
   }
 
   const apiKey = process.env.IMGBB_API_KEY;
