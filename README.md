@@ -2,6 +2,8 @@
 
 > *Có những ngày, câu hỏi khó nhất không phải là công việc — mà là "Hôm nay ăn gì?"*
 
+![Preview](preview.png)
+
 Đây là một góc nhỏ trên Internet, được xây dựng riêng cho việc ăn gì? quán nào? chơi gì?. Mở web lên, xoay vòng quay, và đi ăn thôi!
 
 ---
