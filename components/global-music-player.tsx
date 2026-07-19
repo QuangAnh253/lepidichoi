@@ -70,7 +70,8 @@ export function GlobalMusicPlayer({ initialEnabled }: { initialEnabled: boolean 
       if (playPromise !== undefined) {
         playPromise.catch(e => {
           // Ignore AbortError caused by rapid play/pause or src changes
-          if (e.name !== "AbortError") {
+          // Ignore NotAllowedError caused by browser autoplay policies
+          if (e.name !== "AbortError" && e.name !== "NotAllowedError") {
             console.error("Audio play error:", e);
           }
         });

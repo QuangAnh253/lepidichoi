@@ -4,13 +4,8 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Cho phép truy cập tự do vào trang login, các tài nguyên tĩnh, âm thanh, icon...
+  // Cho phép truy cập tự do vào trang login, và trang guest
   if (
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/audio") ||
-    pathname.startsWith("/favicon.ico") ||
-    pathname.startsWith("/icon") ||
-    pathname.startsWith("/apple-icon") ||
     pathname.startsWith("/login") ||
     pathname.startsWith("/guest")
   ) {
@@ -31,7 +26,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Áp dụng middleware cho mọi đường dẫn, ngoại trừ các file tĩnh nội bộ Next.js
-    "/((?!_next/static|_next/image|favicon.ico).*)",
+    // Áp dụng middleware cho mọi đường dẫn, ngoại trừ các file tĩnh nội bộ Next.js và các file ảnh/âm thanh/manifest
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|webmanifest|ico|mp3|wav|ogg)$).*)",
   ],
 };
