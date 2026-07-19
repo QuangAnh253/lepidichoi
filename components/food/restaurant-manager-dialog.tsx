@@ -121,7 +121,7 @@ export function RestaurantManagerDialog({ open, onOpenChange, restaurants, categ
                   {r.address && <p className="text-xs text-muted-foreground">{r.address}</p>}
                 </div>
                 <div className="flex items-center gap-1">
-                  <a href={googleMapUrl(r)} target="_blank" rel="noopener noreferrer" aria-label="Xem trên Google Maps"><Button size="icon" variant="ghost" className="h-8 w-8"><ExternalLink className="h-3.5 w-3.5" /></Button></a>
+                  {r.url && <a href={r.url} target="_blank" rel="noopener noreferrer" aria-label="Truy cập Website"><Button size="icon" variant="ghost" className="h-8 w-8"><ExternalLink className="h-3.5 w-3.5" /></Button></a>}
                   <a href={directionsUrl(r)} target="_blank" rel="noopener noreferrer" aria-label="Chỉ đường"><Button size="icon" variant="ghost" className="h-8 w-8"><Navigation className="h-3.5 w-3.5" /></Button></a>
                   <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => startEdit(r)}>
                     <Pencil className="h-3.5 w-3.5" />
@@ -224,11 +224,7 @@ function RestaurantDraftRow({
   );
 }
 
-function googleMapUrl(place: Pick<Restaurant, "name" | "address" | "latitude" | "longitude" | "googleMapUrl">) {
-  if (place.googleMapUrl) return place.googleMapUrl;
-  const query = place.latitude != null && place.longitude != null ? `${place.latitude},${place.longitude}` : `${place.name} ${place.address ?? ""}`;
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
-}
+
 function directionsUrl(place: Pick<Restaurant, "name" | "address" | "latitude" | "longitude" | "googleMapUrl">) {
   if (place.googleMapUrl) return place.googleMapUrl;
   const destination = place.latitude != null && place.longitude != null ? `${place.latitude},${place.longitude}` : `${place.name} ${place.address ?? ""}`;
