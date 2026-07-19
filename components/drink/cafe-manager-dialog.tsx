@@ -11,6 +11,7 @@ import { MapPickerDialog } from "@/components/drink/map-picker-dialog";
 import { formatCoordinates, type Coordinates } from "@/lib/map";
 import type { Category } from "@prisma/client";
 import type { CafeWithRelations } from "@/types";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 interface CafeManagerDialogProps {
   open: boolean;
@@ -30,6 +31,7 @@ export function CafeManagerDialog({ open, onOpenChange, cafe, categories, existi
   const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
   const [imageUrl, setImageUrl] = useState("");
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [menuUrl, setMenuUrl] = useState("");
   const [url, setUrl] = useState("");
   const [googleMapUrl, setGoogleMapUrl] = useState("");
@@ -49,6 +51,7 @@ export function CafeManagerDialog({ open, onOpenChange, cafe, categories, existi
         : null
     );
     setImageUrl(cafe?.imageUrl ?? "");
+    setUploadedImageUrl(cafe?.uploadedImageUrl ?? "");
     setMenuUrl(cafe?.menuUrl ?? "");
     setUrl(cafe?.url ?? "");
     setGoogleMapUrl(cafe?.googleMapUrl ?? "");
@@ -114,6 +117,7 @@ export function CafeManagerDialog({ open, onOpenChange, cafe, categories, existi
         latitude: coordinates?.latitude ?? null,
         longitude: coordinates?.longitude ?? null,
         imageUrl: imageUrl.trim() || null,
+        uploadedImageUrl: uploadedImageUrl.trim() || null,
         menuUrl: menuUrl.trim() || null,
         url: url.trim() || null,
         googleMapUrl: googleMapUrl.trim() || null,
@@ -191,12 +195,16 @@ export function CafeManagerDialog({ open, onOpenChange, cafe, categories, existi
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm text-muted-foreground">Ảnh đại diện quán (URL, có thể bỏ trống)</label>
+              <label className="text-sm text-muted-foreground">Ảnh đại diện quán (Ưu tiên ảnh tự tải lên)</label>
+              <div className="py-2">
+                <ImageUpload value={uploadedImageUrl} onChange={setUploadedImageUrl} />
+              </div>
+              <p className="text-xs text-center text-muted-foreground mt-2 mb-2">- Hoặc -</p>
               <input
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
                 className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring"
-                placeholder="https://..."
+                placeholder="Dán link ảnh từ web khác (https://...)"
               />
             </div>
 

@@ -21,6 +21,7 @@ export interface PlaceCreateData {
   latitude: number | null;
   longitude: number | null;
   imageUrl: string | null;
+  uploadedImageUrl: string | null;
   url: string | null;
   googleMapUrl: string | null;
   priceRange: Prisma.PlaceCreateInput["priceRange"];

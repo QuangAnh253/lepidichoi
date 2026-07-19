@@ -58,9 +58,9 @@ export function CafeCard({
       }`}
     >
       <div className="flex aspect-[4/3] items-center justify-center bg-secondary/60 px-6 text-center">
-        {cafe.imageUrl ? (
+        {cafe.uploadedImageUrl || cafe.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={cafe.imageUrl} alt={cafe.name} className="h-full w-full object-cover" />
+          <img src={cafe.uploadedImageUrl || cafe.imageUrl!} alt={cafe.name} className="h-full w-full object-cover" />
         ) : (
           <p className="font-display text-xl italic text-muted-foreground">{cafe.name}</p>
         )}

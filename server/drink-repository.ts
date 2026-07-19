@@ -17,6 +17,7 @@ export interface CafeCreateData {
   latitude: number | null;
   longitude: number | null;
   imageUrl: string | null;
+  uploadedImageUrl: string | null;
   menuUrl: string | null;
   url: string | null;
   googleMapUrl: string | null;
@@ -61,6 +62,7 @@ export const drinkRepository = {
         latitude: data.latitude,
         longitude: data.longitude,
         imageUrl: data.imageUrl,
+        uploadedImageUrl: data.uploadedImageUrl,
         menuUrl: data.menuUrl,
         url: data.url,
         googleMapUrl: data.googleMapUrl,
@@ -85,6 +87,7 @@ export const drinkRepository = {
         latitude: data.latitude,
         longitude: data.longitude,
         imageUrl: data.imageUrl,
+        uploadedImageUrl: data.uploadedImageUrl,
         menuUrl: data.menuUrl,
         url: data.url,
         googleMapUrl: data.googleMapUrl,

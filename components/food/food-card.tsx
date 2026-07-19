@@ -80,9 +80,9 @@ export function FoodCard({
       }`}
     >
       <div className="flex aspect-[4/3] items-center justify-center bg-secondary/60 px-6 text-center">
-        {food.imageUrl ? (
+        {food.uploadedImageUrl || food.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={food.imageUrl} alt={food.name} className="h-full w-full object-cover" />
+          <img src={food.uploadedImageUrl || food.imageUrl!} alt={food.name} className="h-full w-full object-cover" />
         ) : (
           <p className="font-display text-xl italic text-muted-foreground">{food.name}</p>
         )}

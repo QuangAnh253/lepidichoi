@@ -10,6 +10,7 @@ import { MapPickerDialog } from "@/components/place/map-picker-dialog";
 import { formatCoordinates, type Coordinates } from "@/lib/map";
 import type { Category } from "@prisma/client";
 import type { PlaceWithRelations } from "@/types";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 interface PlaceFormDialogProps {
   open: boolean;
@@ -29,6 +30,7 @@ export function PlaceFormDialog({ open, onOpenChange, place, categories, existin
   const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
   const [imageUrl, setImageUrl] = useState("");
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [url, setUrl] = useState("");
   const [googleMapUrl, setGoogleMapUrl] = useState("");
   const [priceRange, setPriceRange] = useState("");
@@ -45,6 +47,7 @@ export function PlaceFormDialog({ open, onOpenChange, place, categories, existin
         : null
     );
     setImageUrl(place?.imageUrl ?? "");
+    setUploadedImageUrl(place?.uploadedImageUrl ?? "");
     setUrl(place?.url ?? "");
     setGoogleMapUrl(place?.googleMapUrl ?? "");
     setPriceRange(place?.priceRange ?? "");
@@ -84,6 +87,7 @@ export function PlaceFormDialog({ open, onOpenChange, place, categories, existin
         latitude: coordinates?.latitude ?? null,
         longitude: coordinates?.longitude ?? null,
         imageUrl: imageUrl.trim() || null,
+        uploadedImageUrl: uploadedImageUrl.trim() || null,
         url: url.trim() || null,
         googleMapUrl: googleMapUrl.trim() || null,
         priceRange: priceRange === "" ? null : (priceRange as any),
@@ -144,12 +148,16 @@ export function PlaceFormDialog({ open, onOpenChange, place, categories, existin
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm text-muted-foreground">Ảnh (URL, có thể bỏ trống)</label>
+            <label className="text-sm text-muted-foreground">Ảnh (Ưu tiên ảnh tự tải lên)</label>
+            <div className="py-2">
+              <ImageUpload value={uploadedImageUrl} onChange={setUploadedImageUrl} />
+            </div>
+            <p className="text-xs text-center text-muted-foreground mt-2 mb-2">- Hoặc -</p>
             <input
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
               className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring"
-              placeholder="https://..."
+              placeholder="Dán link ảnh từ web khác (https://...)"
             />
           </div>
 

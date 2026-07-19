@@ -66,6 +66,7 @@ model Restaurant {
   latitude     Float?
   longitude    Float?
   imageUrl     String?
+  uploadedImageUrl String?
   url          String?
   googleMapUrl String?
   priceRange   PriceRange?
@@ -100,6 +101,7 @@ model Food {
   name            String
   description     String?
   imageUrl        String?
+  uploadedImageUrl String?
   priceRange      PriceRange?
   spicyLevel      Int?
   tags            String[]         @default([])
@@ -125,6 +127,7 @@ model Cafe {
   latitude           Float?
   longitude          Float?
   imageUrl           String?
+  uploadedImageUrl   String?
   url                String?
   menuUrl            String?
   googleMapUrl       String?
@@ -167,6 +170,7 @@ model Place {
   latitude      Float?
   longitude     Float?
   imageUrl      String?
+  uploadedImageUrl String?
   url           String?
   googleMapUrl  String?
   priceRange    PriceRange?

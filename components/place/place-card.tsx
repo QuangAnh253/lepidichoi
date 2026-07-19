@@ -63,9 +63,9 @@ export function PlaceCard({
       }`}
     >
       <div className="flex aspect-[4/3] items-center justify-center bg-secondary/60 px-6 text-center">
-        {place.imageUrl ? (
+        {place.uploadedImageUrl || place.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={place.imageUrl} alt={place.name} className="h-full w-full object-cover" />
+          <img src={place.uploadedImageUrl || place.imageUrl!} alt={place.name} className="h-full w-full object-cover" />
         ) : (
           <p className="font-display text-xl italic text-muted-foreground">{place.name}</p>
         )}

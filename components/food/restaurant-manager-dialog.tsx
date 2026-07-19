@@ -15,6 +15,7 @@ import { getOrCreateCategoryAction } from "@/actions/foods";
 import type { Restaurant, Category } from "@prisma/client";
 import { MapPickerDialog } from "@/components/drink/map-picker-dialog";
 import { formatCoordinates, type Coordinates } from "@/lib/map";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 interface RestaurantManagerDialogProps {
   open: boolean;
@@ -25,8 +26,8 @@ interface RestaurantManagerDialogProps {
 
 const NEW_CATEGORY = "__new__";
 
-type Draft = { name: string; address: string; coordinates: Coordinates | null; imageUrl: string; url: string; googleMapUrl: string; priceRange: string; categoryId: string; newCategoryName: string; };
-const EMPTY_DRAFT: Draft = { name: "", address: "", coordinates: null, imageUrl: "", url: "", googleMapUrl: "", priceRange: "", categoryId: "", newCategoryName: "" };
+type Draft = { name: string; address: string; coordinates: Coordinates | null; imageUrl: string; uploadedImageUrl: string; url: string; googleMapUrl: string; priceRange: string; categoryId: string; newCategoryName: string; };
+const EMPTY_DRAFT: Draft = { name: "", address: "", coordinates: null, imageUrl: "", uploadedImageUrl: "", url: "", googleMapUrl: "", priceRange: "", categoryId: "", newCategoryName: "" };
 
 export function RestaurantManagerDialog({ open, onOpenChange, restaurants, categories }: RestaurantManagerDialogProps) {
   const router = useRouter();
@@ -43,7 +44,7 @@ export function RestaurantManagerDialog({ open, onOpenChange, restaurants, categ
   function startEdit(r: Restaurant) {
     setEditingId(r.id);
     setCreating(false);
-    setDraft({ name: r.name, address: r.address ?? "", coordinates: r.latitude != null && r.longitude != null ? { latitude: r.latitude, longitude: r.longitude } : null, imageUrl: r.imageUrl ?? "", url: r.url ?? "", googleMapUrl: r.googleMapUrl ?? "", priceRange: r.priceRange ?? "", categoryId: r.categoryId ?? "", newCategoryName: "" });
+    setDraft({ name: r.name, address: r.address ?? "", coordinates: r.latitude != null && r.longitude != null ? { latitude: r.latitude, longitude: r.longitude } : null, imageUrl: r.imageUrl ?? "", uploadedImageUrl: r.uploadedImageUrl ?? "", url: r.url ?? "", googleMapUrl: r.googleMapUrl ?? "", priceRange: r.priceRange ?? "", categoryId: r.categoryId ?? "", newCategoryName: "" });
   }
 
   function startCreate() {
@@ -89,6 +90,7 @@ export function RestaurantManagerDialog({ open, onOpenChange, restaurants, categ
         latitude: draft.coordinates?.latitude ?? null,
         longitude: draft.coordinates?.longitude ?? null,
         imageUrl: draft.imageUrl.trim() || null,
+        uploadedImageUrl: draft.uploadedImageUrl.trim() || null,
         url: draft.url.trim() || null,
         googleMapUrl: draft.googleMapUrl.trim() || null,
         priceRange: draft.priceRange === "" ? null : (draft.priceRange as any),
@@ -212,7 +214,14 @@ function RestaurantDraftRow({
       />
       <MapPickerDialog initialValue={draft.coordinates} onConfirm={(coordinates) => setDraft({ ...draft, coordinates })} />
       {draft.coordinates && <p className="font-mono text-[11px] text-muted-foreground">{formatCoordinates(draft.coordinates)}</p>}
-      <input value={draft.imageUrl} onChange={(e) => setDraft({ ...draft, imageUrl: e.target.value })} placeholder="Ảnh (URL)" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring" />
+      
+      <div className="space-y-2 py-2">
+        <label className="text-xs font-medium text-muted-foreground">Ảnh (Ưu tiên ảnh tự tải lên)</label>
+        <ImageUpload value={draft.uploadedImageUrl} onChange={(url) => setDraft({ ...draft, uploadedImageUrl: url })} />
+        <p className="text-xs text-center text-muted-foreground mt-2 mb-2">- Hoặc -</p>
+        <input value={draft.imageUrl} onChange={(e) => setDraft({ ...draft, imageUrl: e.target.value })} placeholder="Dán link ảnh từ web khác" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring" />
+      </div>
+
       <input value={draft.googleMapUrl} onChange={(e) => setDraft({ ...draft, googleMapUrl: e.target.value })} placeholder="Google Map URL (Tuỳ chọn)" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring" />
       <input value={draft.url} onChange={(e) => setDraft({ ...draft, url: e.target.value })} placeholder="Website/ Facebook (1 URL)" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring" />
       <div className="grid grid-cols-2 gap-2">
