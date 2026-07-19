@@ -16,12 +16,12 @@ export const metadata: Metadata = {
 
 export default function GuestPage() {
   const defaultEntries = [
-    "Bún chả Hà Nội",
-    "Phở",
+    "Bún chả",
+    "Phở gà",
     "Pizza",
-    "Xem phim",
-    "Cà phê bệt",
-    "Bún đậu mắm tôm"
+    "Bún đậu mắm tôm",
+    "Gà xào bắp cải phô mai",
+    "Gà rán"
   ];
 
   return (
