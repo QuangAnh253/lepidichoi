@@ -12,28 +12,79 @@ interface ImageUploadProps {
   disabled?: boolean;
 }
 
+async function compressImage(file: File, maxWidth = 1920, maxHeight = 1920, quality = 0.8): Promise<File> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new globalThis.Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        let { width, height } = img;
+        
+        if (width > maxWidth || height > maxHeight) {
+          const ratio = Math.min(maxWidth / width, maxHeight / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return resolve(file);
+        
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) return resolve(file);
+            resolve(new File([blob], file.name.replace(/\.[^/.]+$/, ".jpg"), {
+              type: "image/jpeg",
+              lastModified: Date.now(),
+            }));
+          },
+          "image/jpeg",
+          quality
+        );
+      };
+      img.onerror = (err) => reject(err);
+    };
+    reader.onerror = (err) => reject(err);
+  });
+}
+
 export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const originalFile = e.target.files?.[0];
+    if (!originalFile) return;
 
-    if (!file.type.startsWith("image/")) {
+    if (!originalFile.type.startsWith("image/")) {
       toast.error("Vui lòng chọn file ảnh");
-      return;
-    }
-
-    if (file.size > 32 * 1024 * 1024) {
-      toast.error("Kích thước ảnh tối đa là 32MB");
       return;
     }
 
     try {
       setIsUploading(true);
+      
+      // Compress image if it's larger than 1MB
+      let fileToUpload = originalFile;
+      if (originalFile.size > 1024 * 1024) {
+        toast.info("Đang nén ảnh...");
+        fileToUpload = await compressImage(originalFile);
+      }
+
+      if (fileToUpload.size > 4.5 * 1024 * 1024) {
+        toast.error("Kích thước ảnh sau khi nén vẫn quá lớn (tối đa 4.5MB). Vui lòng chọn ảnh khác.");
+        return;
+      }
+
       const formData = new FormData();
-      formData.append("image", file);
+      formData.append("image", fileToUpload);
       
       const result = await uploadImageAction(formData);
       
