@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, Check, X, ExternalLink, Navigation } from "lucide-react";
+import { Plus, Pencil, Trash2, Check, X, ExternalLink, Navigation, Search } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,6 +34,11 @@ export function RestaurantManagerDialog({ open, onOpenChange, restaurants, categ
   const [editingId, setEditingId] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [draft, setDraft] = useState<Draft>(EMPTY_DRAFT);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredRestaurants = restaurants.filter(r => 
+    !searchQuery.trim() || r.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   function startEdit(r: Restaurant) {
     setEditingId(r.id);
@@ -58,6 +63,15 @@ export function RestaurantManagerDialog({ open, onOpenChange, restaurants, categ
       toast.error("Cần có tên quán.");
       return;
     }
+    
+    const isDuplicate = restaurants.some(
+      (r) => r.name.toLowerCase() === draft.name.trim().toLowerCase() && r.id !== editingId
+    );
+    if (isDuplicate) {
+      toast.error("Quán này đã có trong danh sách.");
+      return;
+    }
+
     startTransition(async () => {
       let finalCategoryId = draft.categoryId;
       if (draft.categoryId === NEW_CATEGORY) {
@@ -107,9 +121,31 @@ export function RestaurantManagerDialog({ open, onOpenChange, restaurants, categ
           <DialogTitle>Quán ăn</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-2">
-          {restaurants.map((r) =>
-            editingId === r.id ? (
+        <div className="space-y-4">
+          <div className="flex gap-2 items-center">
+            <div className="relative flex-1">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+              <input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Tìm quán..."
+                className="w-full rounded-lg border border-border bg-background py-2 pl-8 pr-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+            {!creating && (
+              <Button size="sm" onClick={startCreate} className="shrink-0 gap-1.5">
+                <Plus className="h-3.5 w-3.5" /> Thêm quán
+              </Button>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            {creating && (
+              <RestaurantDraftRow draft={draft} setDraft={setDraft} onSave={save} onCancel={cancel} categories={categories} />
+            )}
+
+            {filteredRestaurants.map((r) =>
+              editingId === r.id ? (
               <RestaurantDraftRow key={r.id} draft={draft} setDraft={setDraft} onSave={save} onCancel={cancel} categories={categories} />
             ) : (
               <div
@@ -139,16 +175,7 @@ export function RestaurantManagerDialog({ open, onOpenChange, restaurants, categ
               </div>
             )
           )}
-
-          {creating && (
-            <RestaurantDraftRow draft={draft} setDraft={setDraft} onSave={save} onCancel={cancel} categories={categories} />
-          )}
-
-          {!creating && (
-            <Button variant="outline" size="sm" onClick={startCreate} className="w-full gap-1.5">
-              <Plus className="h-3.5 w-3.5" /> Thêm quán
-            </Button>
-          )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>

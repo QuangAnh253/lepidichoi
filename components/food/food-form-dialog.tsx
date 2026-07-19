@@ -32,11 +32,12 @@ interface FoodFormDialogProps {
   categories: Category[];
   restaurants: Restaurant[];
   allTags: string[];
+  existingFoodNames: string[];
 }
 
 const NEW_CATEGORY = "__new__";
 
-export function FoodFormDialog({ open, onOpenChange, food, categories, restaurants, allTags }: FoodFormDialogProps) {
+export function FoodFormDialog({ open, onOpenChange, food, categories, restaurants, allTags, existingFoodNames }: FoodFormDialogProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -67,6 +68,14 @@ export function FoodFormDialog({ open, onOpenChange, food, categories, restauran
     e.preventDefault();
     if (!name.trim()) {
       toast.error("Món ăn cần có tên.");
+      return;
+    }
+    
+    const isDuplicate = existingFoodNames.some(
+      (n) => n.toLowerCase() === name.trim().toLowerCase() && (!food || food.name.toLowerCase() !== name.trim().toLowerCase())
+    );
+    if (isDuplicate) {
+      toast.error("Món này đã có trong danh sách.");
       return;
     }
 

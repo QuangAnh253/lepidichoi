@@ -16,11 +16,12 @@ interface PlaceFormDialogProps {
   onOpenChange: (open: boolean) => void;
   place?: PlaceWithRelations | null;
   categories: Category[];
+  existingPlaceNames: string[];
 }
 
 const NEW_CATEGORY = "__new__";
 
-export function PlaceFormDialog({ open, onOpenChange, place, categories }: PlaceFormDialogProps) {
+export function PlaceFormDialog({ open, onOpenChange, place, categories, existingPlaceNames }: PlaceFormDialogProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -55,6 +56,14 @@ export function PlaceFormDialog({ open, onOpenChange, place, categories }: Place
     e.preventDefault();
     if (!name.trim()) {
       toast.error("Địa điểm cần có tên.");
+      return;
+    }
+    
+    const isDuplicate = existingPlaceNames.some(
+      (n) => n.toLowerCase() === name.trim().toLowerCase() && (!place || place.name.toLowerCase() !== name.trim().toLowerCase())
+    );
+    if (isDuplicate) {
+      toast.error("Địa điểm này đã có trong danh sách.");
       return;
     }
 

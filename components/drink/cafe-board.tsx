@@ -115,7 +115,13 @@ export function CafeBoard({
         )}
       </section>
 
-      <CafeManagerDialog open={formOpen} onOpenChange={setFormOpen} cafe={editingCafe} categories={categories} />
+      <CafeManagerDialog 
+        open={formOpen} 
+        onOpenChange={setFormOpen} 
+        cafe={editingCafe} 
+        categories={categories} 
+        existingCafeNames={cafes.map(c => c.name)}
+      />
     </div>
   );
 }

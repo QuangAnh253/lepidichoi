@@ -146,6 +146,7 @@ export function FoodBoard({
         categories={categories}
         restaurants={restaurants}
         allTags={allTags}
+        existingFoodNames={foods.map((f) => f.name)}
       />
       <RestaurantManagerDialog
         open={restaurantDialogOpen}

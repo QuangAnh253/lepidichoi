@@ -17,11 +17,12 @@ interface CafeManagerDialogProps {
   onOpenChange: (open: boolean) => void;
   cafe?: CafeWithRelations | null;
   categories: Category[];
+  existingCafeNames: string[];
 }
 
 const NEW_CATEGORY = "__new__";
 
-export function CafeManagerDialog({ open, onOpenChange, cafe, categories }: CafeManagerDialogProps) {
+export function CafeManagerDialog({ open, onOpenChange, cafe, categories, existingCafeNames }: CafeManagerDialogProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -85,6 +86,14 @@ export function CafeManagerDialog({ open, onOpenChange, cafe, categories }: Cafe
     e.preventDefault();
     if (!name.trim()) {
       toast.error("Quán cần có tên.");
+      return;
+    }
+    
+    const isDuplicate = existingCafeNames.some(
+      (n) => n.toLowerCase() === name.trim().toLowerCase() && (!cafe || cafe.name.toLowerCase() !== name.trim().toLowerCase())
+    );
+    if (isDuplicate) {
+      toast.error("Quán này đã có trong danh sách.");
       return;
     }
 

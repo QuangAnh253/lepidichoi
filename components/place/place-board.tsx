@@ -125,7 +125,13 @@ export function PlaceBoard({
         )}
       </section>
 
-      <PlaceFormDialog open={formOpen} onOpenChange={setFormOpen} place={editingPlace} categories={categories} />
+      <PlaceFormDialog 
+        open={formOpen} 
+        onOpenChange={setFormOpen} 
+        place={editingPlace} 
+        categories={categories} 
+        existingPlaceNames={places.map(p => p.name)}
+      />
     </div>
   );
 }
