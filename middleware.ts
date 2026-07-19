@@ -7,7 +7,8 @@ export function middleware(request: NextRequest) {
   // Cho phép truy cập tự do vào trang login, và trang guest
   if (
     pathname.startsWith("/login") ||
-    pathname.startsWith("/guest")
+    pathname.startsWith("/guest") ||
+    pathname.startsWith("/api")
   ) {
     return NextResponse.next();
   }
