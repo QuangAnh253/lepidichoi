@@ -11,10 +11,21 @@ import type { FoodExportPayload } from "@/types";
 
 const priceRangeEnum = z.enum(["BUDGET", "MID", "PREMIUM", "LUXURY"]).nullable().optional();
 
+const lenientUrl = z
+  .string()
+  .trim()
+  .optional()
+  .nullable()
+  .transform((val) => {
+    if (!val) return null;
+    if (val.startsWith("http://") || val.startsWith("https://")) return val;
+    return `https://${val}`;
+  });
+
 const foodInputSchema = z.object({
   name: z.string().trim().min(1, "Cần có tên món").max(120),
   description: z.string().trim().max(500).optional().nullable(),
-  imageUrl: z.string().trim().url().optional().or(z.literal("")).nullable(),
+  imageUrl: lenientUrl,
   priceRange: priceRangeEnum,
   spicyLevel: z.number().int().min(0).max(3).optional().nullable(),
   tags: z.array(z.string().trim().min(1)).max(10).default([]),

@@ -7,14 +7,25 @@ import type { PlaceExportPayload } from "@/types";
 
 // Removed specific PATH constant since we revalidate layout now
 
+const lenientUrl = z
+  .string()
+  .trim()
+  .optional()
+  .nullable()
+  .transform((val) => {
+    if (!val) return null;
+    if (val.startsWith("http://") || val.startsWith("https://")) return val;
+    return `https://${val}`;
+  });
+
 const placeInputSchema = z.object({
   name: z.string().trim().min(1, "Cần có tên địa điểm").max(120),
   address: z.string().trim().max(200).optional().nullable(),
   latitude: z.number().min(-90).max(90).optional().nullable(),
   longitude: z.number().min(-180).max(180).optional().nullable(),
-  imageUrl: z.string().trim().url().optional().or(z.literal("")).nullable(),
-  url: z.string().trim().url().optional().or(z.literal("")).nullable(),
-  googleMapUrl: z.string().trim().url().optional().or(z.literal("")).nullable(),
+  imageUrl: lenientUrl,
+  url: lenientUrl,
+  googleMapUrl: lenientUrl,
   priceRange: z.enum(["BUDGET", "MID", "PREMIUM", "LUXURY"]).nullable().optional(),
   categoryId: z.string().optional().nullable(),
 });
