@@ -30,10 +30,11 @@ export async function loginAction(formData: FormData) {
       maxAge: 60 * 60 * 24 * 30, // 30 ngày
       path: "/",
     });
-    return { success: true };
+  } else {
+    return { success: false, error: "Mật khẩu không đúng. Vui lòng thử lại!" };
   }
   
-  return { success: false, error: "Mật khẩu không đúng. Vui lòng thử lại!" };
+  redirect("/");
 }
 
 export async function logoutAction() {
