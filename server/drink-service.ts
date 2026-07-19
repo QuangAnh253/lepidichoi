@@ -114,6 +114,7 @@ export async function importCafes(payload: CafeExportPayload): Promise<{ importe
         latitude: c.latitude ?? null,
         longitude: c.longitude ?? null,
         imageUrl: c.imageUrl ?? null,
+        uploadedImageUrl: null,
         menuUrl: c.menuUrl ?? null,
         url: c.url ?? null,
         googleMapUrl: c.googleMapUrl ?? null,

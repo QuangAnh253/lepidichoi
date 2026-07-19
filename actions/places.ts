@@ -24,6 +24,7 @@ const placeInputSchema = z.object({
   latitude: z.number().min(-90).max(90).optional().nullable(),
   longitude: z.number().min(-180).max(180).optional().nullable(),
   imageUrl: lenientUrl,
+  uploadedImageUrl: lenientUrl,
   url: lenientUrl,
   googleMapUrl: lenientUrl,
   priceRange: z.enum(["BUDGET", "MID", "PREMIUM", "LUXURY"]).nullable().optional(),

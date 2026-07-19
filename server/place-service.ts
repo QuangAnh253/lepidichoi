@@ -151,6 +151,7 @@ export async function importPlaces(payload: PlaceExportPayload): Promise<{ impor
       latitude: p.latitude ?? null,
       longitude: p.longitude ?? null,
       imageUrl: p.imageUrl ?? null,
+      uploadedImageUrl: null,
       url: p.url ?? null,
       googleMapUrl: p.googleMapUrl ?? null,
       priceRange: p.priceRange ?? null,
