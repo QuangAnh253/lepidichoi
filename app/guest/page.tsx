@@ -2,6 +2,12 @@ import { GuestWheel } from "@/components/guest/guest-wheel";
 import { Metadata } from "next";
 import Link from "next/link";
 import { MapPin, ArrowRight } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
   title: "Vòng Quay Đồ Ăn Hà Nội | Random Món Ăn Hôm Nay - Lê Pi đi chơi",
@@ -130,6 +136,40 @@ export default function GuestPage() {
             Khu vực dành riêng
           </Link>
         </div>
+
+        <section className="mt-32 max-w-3xl mx-auto animate-fade-in-up">
+          <h2 className="text-3xl font-display text-center mb-8">Bạn có biết?</h2>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="text-left text-lg font-semibold">Lê Pi đi chơi (lepidichoi) là gì?</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed text-base">
+                Lê Pi đi chơi (lepidichoi.io.vn) là một ứng dụng web miễn phí giúp bạn giải quyết nhanh gọn câu hỏi &quot;Hôm nay ăn gì?&quot;. Với công cụ vòng quay đồ ăn ngẫu nhiên và bản đồ ẩm thực, chúng tôi giúp các cặp đôi và giới trẻ tại Hà Nội dễ dàng chọn lựa quán ăn ngon, quán cafe đẹp và địa điểm vui chơi hẹn hò mà không cần phải đau đầu suy nghĩ.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-2">
+              <AccordionTrigger className="text-left text-lg font-semibold">Vòng quay đồ ăn ngẫu nhiên hoạt động như thế nào?</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed text-base">
+                Vòng quay đồ ăn Hà Nội của Lê Pi đi chơi được thiết kế cực kỳ đơn giản. Bạn chỉ cần vào trang, nhấn nút &quot;Quay&quot;, hệ thống sẽ tự động chọn ngẫu nhiên một món ăn (như Bún chả, Phở bò, Pizza...) hoặc một địa điểm. Nó đóng vai trò như một &quot;trợ lý&quot; đưa ra quyết định ăn uống ngẫu nhiên, giúp bạn tiết kiệm thời gian phân vân mỗi ngày.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-3">
+              <AccordionTrigger className="text-left text-lg font-semibold">Bản đồ ẩm thực trên trang web có gì đặc biệt?</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed text-base">
+                Khác với các công cụ tìm kiếm đại trà, Bản đồ ẩm thực Hà Nội của chúng tôi (tại mục Khám phá bản đồ) được tổng hợp và chọn lọc kỹ lưỡng. Tại đây tập hợp những quán ăn ngon, quán cà phê bệt chill và các địa điểm ăn chơi chất lượng. Bạn có thể dễ dàng tìm kiếm xung quanh mình hoặc tham khảo cho những buổi hẹn hò cuối tuần.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-4">
+              <AccordionTrigger className="text-left text-lg font-semibold">Dự án này do ai làm ra thế?</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed text-base">
+                Lê Pi đi chơi ban đầu chỉ là một &quot;tác phẩm&quot; nhỏ xinh được tạo ra để giải cứu hai đứa mình khỏi những buổi chiều ngơ ngác hỏi nhau: &quot;Tối nay ăn gì?&quot;. Thấy vui và tiện quá nên bọn mình quyết định mở công khai để mọi người cùng xài chung. Mong là trang web nhỏ này sẽ giúp các bạn bớt một phần &quot;đau đầu&quot; khi hẹn hò ở Hà Nội nhé! Cứ dùng thoải mái, hoàn toàn miễn phí nha.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </section>
+
       </div>
     </main>
   );
