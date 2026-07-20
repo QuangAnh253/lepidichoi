@@ -28,11 +28,40 @@ export const metadata: Metadata = {
 export default function GuestPage() {
   const defaultEntries = [
     "Bún chả",
+    "Bún đậu mắm tôm",
+    "Hamburger",
+    "Tokbokki",
+    "Steak (Bò bít tết)",
     "Phở gà",
     "Pizza",
-    "Bún đậu mắm tôm",
+    "Bánh mì chảo",
+    "Phở bò",
+    "Bún cá cay",
+    "Bún bò Huế",
+    "Bánh đa cua",
+    "Miến lươn trộn",
+    "Bún riêu cua",
+    "Cháo sườn sụn",
+    "Gà rán",
     "Gà xào bắp cải phô mai",
-    "Gà rán"
+    "Hot dog phô mai Hàn Quốc",
+    "Salad ức gà sốt mè rang",
+    "Takoyaki",
+    "Bánh xèo Nhật Bản (Okonomiyaki)",
+    "Pad Thái",
+    "Cơm thố trộn (Bibimbap)",
+    "Mì Ramen",
+    "Vịt quay Bắc Kinh",
+    "Sushi / Sashimi",
+    "Lẩu Thái Tom Yum",
+    "Dimsum",
+    "Kimbap",
+    "Cơm gà xối mỡ",
+    "Cơm tấm sườn bì chả",
+    "Cơm niêu Singapore (Ếch/Bò)",
+    "Xôi xéo thịt kho trứng",
+    "Cơm rang dưa bò",
+    "Mì Ý (Pasta)"
   ];
 
   return (
