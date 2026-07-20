@@ -4,10 +4,21 @@ import Link from "next/link";
 import { MapPin, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Vòng Quay Đồ Ăn",
-  description: "Không biết hôm nay ăn gì? Xoay vòng quay đồ ăn ngẫu nhiên của Lê Pi đi chơi (lepidichoi) để chọn món ăn, đồ uống hoặc địa điểm vui chơi tại Hà Nội ngay lập tức.",
+  title: "Vòng Quay Đồ Ăn Hà Nội | Random Món Ăn Hôm Nay - Lê Pi đi chơi",
+  description: "Không biết hôm nay ăn gì ở Hà Nội? Dùng ngay vòng quay đồ ăn ngẫu nhiên (random món ăn) của Lê Pi đi chơi (lepidichoi) để chọn quán ăn ngon, đồ uống và địa điểm vui chơi ngay lập tức.",
+  keywords: [
+    "vòng quay đồ ăn hà nội",
+    "hôm nay ăn gì",
+    "random món ăn",
+    "vòng quay ăn gì",
+    "vòng quay đồ ăn",
+    "ăn gì hôm nay",
+    "chọn món ăn ngẫu nhiên",
+    "địa điểm ăn ngon hà nội",
+    "lepidichoi"
+  ],
   openGraph: {
-    title: "Vòng Quay Đồ Ăn | Hôm Nay Ăn Gì?",
+    title: "Vòng Quay Đồ Ăn Hà Nội | Hôm Nay Ăn Gì?",
     description: "Vòng quay đồ ăn ngẫu nhiên, random ẩm thực Hà Nội cùng Lê Pi đi chơi (lepidichoi).",
     url: "https://lepidichoi.io.vn/guest",
     images: ["https://lepidichoi.io.vn/preview.png"],
@@ -26,11 +37,32 @@ export default function GuestPage() {
 
   return (
     <main className="min-h-screen bg-background pt-12 pb-20">
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Vòng Quay Đồ Ăn Hà Nội - Lê Pi đi chơi",
+            "alternateName": "Hôm Nay Ăn Gì?",
+            "url": "https://lepidichoi.io.vn/guest",
+            "description": "Ứng dụng vòng quay đồ ăn ngẫu nhiên giúp bạn quyết định hôm nay ăn gì, uống gì và đi đâu chơi tại Hà Nội.",
+            "applicationCategory": "LifestyleApplication",
+            "operatingSystem": "All",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "VND"
+            }
+          })
+        }}
+      />
       <div className="container max-w-6xl">
         <header className="mb-12 text-center animate-fade-in-up">
-          <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            một trang nhỏ, cho lựa chọn lớn
-          </p>
+          <h2 className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            VÒNG QUAY ĐỒ ĂN HÀ NỘI NGẪU NHIÊN
+          </h2>
           <h1 className="text-balance font-display text-4xl leading-[1.15] sm:text-5xl mb-6">
             Có những ngày, câu hỏi khó nhất
             <br />
@@ -39,8 +71,7 @@ export default function GuestPage() {
             mà là <span className="italic text-primary">&ldquo;hôm nay ăn gì?&rdquo;</span>
           </h1>
           <p className="mx-auto max-w-md text-muted-foreground">
-            Không sợ không chọn được, chỉ sợ thiếu thời gian ăn sập Hà Nội.
-            Cứ mở lên, quay một vòng, rồi đi ăn thôi.
+            Bạn đang phân vân không biết ăn gì ở Hà Nội? Cứ mở vòng quay random món ăn lên, xoay một vòng rồi đi ăn thôi.
           </p>
         </header>
 

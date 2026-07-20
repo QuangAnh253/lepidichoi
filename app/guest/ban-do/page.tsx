@@ -9,10 +9,18 @@ import { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Bản Đồ Ẩm Thực & Địa Điểm",
-  description: "Bản đồ quán ngon Hà Nội và các địa điểm đi chơi hấp dẫn nhất được tổng hợp bởi Lê Pi đi chơi (lepidichoi). Khám phá ngay!",
+  title: "Bản Đồ Ẩm Thực Hà Nội | Quán Ngon & Địa Điểm Đi Chơi",
+  description: "Bản đồ quán ngon Hà Nội, cà phê bệt và các địa điểm đi chơi hấp dẫn nhất được tổng hợp bởi Lê Pi đi chơi (lepidichoi). Khám phá ngay bản đồ ăn uống Hà Nội!",
+  keywords: [
+    "bản đồ ẩm thực hà nội",
+    "bản đồ quán ngon hà nội",
+    "bản đồ ăn uống hà nội",
+    "địa điểm đi chơi hà nội",
+    "quán cafe hà nội",
+    "lepidichoi"
+  ],
   openGraph: {
-    title: "Bản Đồ Ẩm Thực & Địa Điểm | Hôm Nay Ăn Gì?",
+    title: "Bản Đồ Ẩm Thực Hà Nội | Hôm Nay Ăn Gì?",
     description: "Bản đồ các quán ngon Hà Nội, cà phê bệt, chốn ăn chơi được đúc kết trên một bản đồ duy nhất bởi Lê Pi đi chơi.",
     url: "https://lepidichoi.io.vn/guest/ban-do",
     images: ["https://lepidichoi.io.vn/preview.png"],
