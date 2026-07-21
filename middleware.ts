@@ -27,7 +27,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Áp dụng middleware cho mọi đường dẫn, ngoại trừ các file tĩnh nội bộ Next.js và các file ảnh/âm thanh/manifest
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|webmanifest|ico|mp3|wav|ogg)$).*)",
+    // Áp dụng middleware cho mọi đường dẫn, ngoại trừ các file tĩnh nội bộ Next.js và các file ảnh/âm thanh/manifest/xml/txt
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|webmanifest|ico|mp3|wav|ogg|xml|txt)$).*)",
   ],
 };
